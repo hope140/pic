@@ -15,9 +15,8 @@
 \usepackage{appendix}                           %附录排版
 \usepackage{listings}                           %插入代码
 \usepackage{xcolor}                             %代码颜色
-\newcommand*{\circled}[1]{\lower.7ex\hbox{\tikz\draw (0pt, 0pt) circle (.45em) node {\makebox[1em][c]{\small #1}};}}
-%由于自带效果不好，自定义带圈的数字样式
-\title{\zihao{-2}无线可充电传感器网络充电路线规划\vspace{-2em}}
+
+\title{\zihao{-2}炉温曲线\vspace{-2em}}
 %文章标题 且拉进与正文距离 默认 三号
 \date{}     %取消时间显示
 \author{}   %取消作者显示
@@ -27,6 +26,8 @@
 %把"reference"改成"参考文献"
 \renewcommand{\abstractname}{\zihao{3} 摘\ 要\\\vspace{1em}}
 %把“abstract”改成“摘要” 且拉开与正文距离
+\newcommand*{\circled}[1]{\lower.7ex\hbox{\tikz\draw (0pt, 0pt) circle (.45em) node {\makebox[1em][c]{\small #1}};}}
+%由于自带效果不好，自定义带圈的数字样式
 \geometry{left=3.18cm,right=3.18cm,top=2.54cm,bottom=2.54cm}
 %设置页边距，此处参考word默认间距
 \titleformat*{\section}{\zihao{3}\bfseries}
@@ -41,16 +42,17 @@
 \setcounter{secnumdepth}{4}
 %改变章节编号深度，使得四级标题编号自动生成，如需目录章节深度则使用tocdepth
 \lstset{
-  language=Matlab,  %代码语言使用的是matlab
-  keywordstyle=\color{blue!90}\bfseries, %代码关键字的颜色为蓝色，粗体
-  commentstyle=\color{red!20!green!90}\textit,    % 设置代码注释的颜色为绿色
-  showstringspaces=false,%不显示代码字符串中间的空格标记
-  stringstyle=\ttfamily, % 代码字符串的特殊格式
-  breaklines=true, %对过长的代码自动换行
-  extendedchars=false,  %解决代码跨页时，章节标题，页眉等汉字不显示的问题
-  texcl=true}
-\lstset{breaklines}%自动将长的代码行换行排版
-\lstset{extendedchars=false}%解决代码跨页时，章节标题，页眉等汉字不显示的问题
+    language=Matlab,                                        %代码语言使用的是matlab
+    keywordstyle=\color{blue!90}\bfseries,                  %代码关键字的颜色为蓝色，粗体
+    commentstyle=\color{red!20!green!90}\textit,            %设置代码注释的颜色为绿色
+    showstringspaces=false,                                 %不显示代码字符串中间的空格标记
+    stringstyle=\ttfamily,                                  %代码字符串的特殊格式
+    breaklines=true,                                        %对过长的代码自动换行
+    extendedchars=false,                                    %解决代码跨页时，章节标题，页眉等汉字不显示的问题
+    texcl=true
+}
+\lstset{breaklines}                                         %自动将长的代码行换行排版
+\lstset{extendedchars=false}                                %解决代码跨页时，章节标题，页眉等汉字不显示的问题
 \begin{document}
 \setlength{\parindent}{2em}         
 %首行缩进两字符
@@ -62,15 +64,11 @@
 
 对于问题一，首先根据附件的传感器的经纬度位置，计算每个传感器之间的实际距离，然后将问题转变为求从数据中心出发，依次经过每一个传感器然后回到数据中心的这一路线的最短距离。然后根据题目要求建立了目标函数，其中以第i个节点是否到达第j个节点作为决策变量，以从数据中心出发遍历每一个节点然后回到数据中心的最小距离作为目标函数，其中保证每一个节点有且只经过一次来建立数学模型。然后通过遗传算法来解决该问题，在解决问题的过程中，进行了几次优化，进行了几次搜索，得到的结果从14143m→13262m→13060m→11895m，所以得到了最优路线以及最短路程。
 
-对于问题二，移动充电器的工作原理是从数据中心出发，行驶一段路程后到达传感器并给其充电，依次给29个传感器充完电后再返回数据中心，由于题设要求需一直保持工作状态，所以需要考虑两个过程：一是返回到数据中心；二是再次为传感器充电，需要保证在这两个过程完成的时候传感器的电量仍然大于阈值即传感器能正常工作。这里通过分析传感器消耗能量的时间分为两个部分——为传感器充满电量所消耗的时间和充电器到达传感器消耗的时间，然后以传感器所要消耗的能量为目标函数，所求解的电池容量为这一目标函数加上阈值。
-
-\setlength{\baselineskip}{20pt}     对于问题三，与问题一、二不同之处在于，移动充电器的数量从1个增至4个，在这个改变之上再求解出移动充电器的行驶路线和传感器的电池容量。移动充电器的数量增加，则线路的规划即可视为MTSP问题，同样运用遗传算法来解决。电池容量的求解也与第二问类似，可以视为把一条路线划分成4条互相独立的路线，再结合第二问的公式，即可解出。\\
+对于问题二，移动充电器的工作原理是从数据中心出发，行驶一段路程后到达传感器并给其充电，依次给29个传感器充完电后再返回数据中心，由于题设要求需一直保持工作状态。\\
 
 \noindent \textbf{关键词：}无线传感网络\quad MTSP问题\quad 遗传算法\quad 数值解法\quad MATLAB软件
 %局部取消缩进
 }
-\thispagestyle{empty}
-%本页不生成页码 摘要写的太多 多了一页
 \end{abstract}                                              %摘要 结束
 \newpage                                                    %换页
 \setcounter{page}{1}                                        %文章页码从1开始重新编排
@@ -84,12 +82,6 @@
 无线可充电传感器网络包括三个部分：一个数据中心DC（Data Center）、若干传感器（Sensors）、一个或多个移动充电器MC（Mobile Charger）。
 
 数据中心和若干传感器分布在一个二维空间中，如下图所示（虚线箭头表示数据中心与传感器之间、传感器与传感器之间均存在一条路径互相连通；实线箭头表示MC的充电路线）。
-
-\begin{figure}[H]%先尝试能否将照片放在原处(here)，如果不能，那么放在页面底部(bottom),最后尝试放在顶部(top) 都不可以采用H强制放在原位
-    \centering
-    \includegraphics[scale=0.5]{1.jpg}
-    \caption{数据中心和传感器分布图}
-\end{figure}
 
 在该系统中，传感器从环境中收集信息并将收集到的信息传递给数据中心。当一个传感器的电量低于一个阈值时便无法进行正常的信息采集工作，为了让WRSN正常运转，移动充电器需要定期为传感器进行充电以避免其电量低于阈值。
 
@@ -187,19 +179,7 @@
 \subsection{问题一}
 对于问题一，我们需要求解当只派出一个移动充电器时，规划移动充电器的充电路线使得移动充电器在路上的能量消耗最小。\\
 \vspace{0.5ex}
-\begin{figure}[hbt]
-	\begin{minipage}[t]{0.5\textwidth}
-		\centering
-		\includegraphics[scale=0.5]{3.jpg}
-		\caption{单充电器无线充电网络}
-	\end{minipage}
-	\qquad
-	\begin{minipage}[t]{0.5\textwidth}
-		\centering
-		\includegraphics[scale=0.5]{4.jpg}
-		\caption{单充电器充电线路模型}
-	\end{minipage}
-\end{figure}
+
 \vspace{0.5ex}
 
 这里我们由题目可以了解到：移动充电器在路上的能量消耗分为两部分——传感器节点充电所导致的正常的能量消耗和移动充电器在去为传感器充电的路上的能量消耗。设E$_0$为消耗的能量，E$_1$为传感器节点充电所消耗的能量，E$_2$为传感器充电路上的能量消耗，则有：
